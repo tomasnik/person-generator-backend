@@ -9,9 +9,23 @@ app.use(cors())
 
 const jsonParser = bodyParser.json();
 
+const componentsKeys = Object.keys(components);
+
 app.get("/builder", (req, res) => {
     return res.status(200).json(createAvatar());
 });
+
+app.get("/types", (req, res) => {
+    return res.status(200).json(componentsKeys);
+});
+
+app.get("/names/:type", (req, res) => {
+    const type = req.params.type;
+    if (componentsKeys.includes(type)) {
+        return res.status(200).json(Object.keys(components[type]));
+    }
+    return res.status(404).json("not found");
+})
 
 let avatar = createAvatar();
 
